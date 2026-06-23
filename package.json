@@ -2,7 +2,6 @@
   "scripts": {
     "start": "node index.js"
   },
-
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.2",
@@ -19,6 +18,4 @@
     "nodemailer": "^8.0.7",
     "util": "^0.12.5"
   }
-
 }
-
