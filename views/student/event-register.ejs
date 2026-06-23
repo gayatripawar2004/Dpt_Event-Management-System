@@ -1,0 +1,49 @@
+<%- include('navbar.ejs') %>
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2><%= event.title %> – Registration</h2>
+        </div>
+        <div class="card-body">
+            <form action="/event-register/<%= event.id %>" method="POST">
+                <% fields.forEach(field => { %>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <%= field.field_label %>
+                            <% if(field.is_required) { %><span class="text-danger">*</span><% } %>
+                        </label>
+
+                        <% if(field.field_type === 'textarea') { %>
+                            <textarea name="<%= field.field_name %>" class="form-control" rows="3" <%= field.is_required ? 'required' : '' %>></textarea>
+
+                        <% } else if(field.field_type === 'select') { %>
+                            <select name="<%= field.field_name %>" class="form-select" <%= field.is_required ? 'required' : '' %>>
+                                <option value="">-- Select --</option>
+                                <% let opts = field.options ? field.options.split(',') : []; %>
+                                <% opts.forEach(opt => { %>
+                                    <option value="<%= opt.trim() %>"><%= opt.trim() %></option>
+                                <% }) %>
+                            </select>
+
+                        <% } else if(field.field_type === 'radio') { %>
+                            <% let opts = field.options ? field.options.split(',') : []; %>
+                            <% opts.forEach(opt => { %>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="<%= field.field_name %>" value="<%= opt.trim() %>" <%= field.is_required ? 'required' : '' %>>
+                                    <label class="form-check-label"><%= opt.trim() %></label>
+                                </div>
+                            <% }) %>
+
+                        <% } else { %>
+                            <input type="<%= field.field_type %>" name="<%= field.field_name %>" class="form-control" <%= field.is_required ? 'required' : '' %>>
+                        <% } %>
+                    </div>
+                <% }) %>
+
+                <button type="submit" class="btn btn-success">Register Now</button>
+                <a href="/event-details?id=<%= event.id %>" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include('footer.ejs') %>

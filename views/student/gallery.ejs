@@ -1,0 +1,212 @@
+<%- include('navbar.ejs') %>
+
+<link rel="stylesheet" href="/css/student/gallery.css">
+
+<!-- Page Header -->
+<section class="page-header" style="background-image: url('/uploads/<%= header.image %>'); background-size: cover; background-position: center;">
+    <div class="container text-white">
+        <h1 class="display-4 fw-bold"><%= header.title %></h1>
+        <p class="lead fw-bold"><%= header.subtitle %></p>
+    </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="py-4 pb-5">
+    <div class="container">
+      <div class="row g-4 gallery-grid">
+    <% if (gallery.length > 0) { %>
+        <% gallery.forEach((item, index) => { %>
+            <div class="col-md-4 col-sm-6">
+                <div class="gallery-item" data-index="<%= index %>">
+                    
+                    <img src="/uploads/<%= item.image_url %>" 
+                         class="gallery-image" 
+                         alt="<%= item.title %>" 
+                         loading="lazy">
+
+                    <div class="gallery-overlay">
+                        <h5>📸 <%= item.title %></h5>
+                        <p>
+                            <%= item.description %> | 
+                            <%= item.event_date ? item.event_date.toISOString().split('T')[0] : '' %>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p class="text-center">No gallery images available</p>
+    <% } %>
+</div>
+    </div>
+</section>
+
+<!-- Modal Carousel (Lightbox) -->
+<div class="modal fade lightbox-modal" id="galleryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-transparent border-0">
+            <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="modal-body p-0">
+                <div id="galleryCarousel" class="carousel slide" data-bs-ride="false" data-bs-interval="false">
+                    <div class="carousel-indicators" id="carouselIndicators"></div>
+                    <div class="carousel-inner" id="carouselInner"></div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#galleryCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#galleryCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>
+
+<!-- Bootstrap JS + Popper -->
+
+<script>
+(function () {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const imagesData = [];
+
+    galleryItems.forEach((item) => {
+        const img = item.querySelector('.gallery-image');
+        const titleElem = item.querySelector('.gallery-overlay h5');
+        const descElem = item.querySelector('.gallery-overlay p');
+        if (img && titleElem && descElem) {
+            imagesData.push({
+                src: img.src,
+                title: titleElem.innerText,
+                description: descElem.innerText
+            });
+        }
+    });
+
+    const carouselInner = document.getElementById('carouselInner');
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+    let carouselInstance = null;
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function (m) {
+            return m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;';
+        });
+    }
+
+    function buildCarouselOnce() {
+        if (!carouselInner) return;
+        let slidesHtml = '';
+        let indicatorsHtml = '';
+
+        imagesData.forEach((img, i) => {
+            const isActive = i === 0 ? 'active' : '';
+            slidesHtml += `
+            <div class="carousel-item ${isActive}">
+                <div class="carousel-img-wrapper">
+                    <img src="${img.src}" alt="${escapeHtml(img.title)}" loading="lazy"
+                         onload="this.classList.add('loaded')"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="img-error">
+                        <i class="bi bi-image"></i>
+                        <div>⚠️ Image not loaded</div>
+                        <span>${escapeHtml(img.title)}</span>
+                    </div>
+                    <div class="image-caption">
+                        <h5>${escapeHtml(img.title)}</h5>
+                        <p>${escapeHtml(img.description)}</p>
+                    </div>
+                </div>
+            </div>
+            `;
+            indicatorsHtml += `
+            <button type="button" data-bs-target="#galleryCarousel" data-bs-slide-to="${i}"
+                class="${i === 0 ? 'active' : ''}"
+                aria-current="${i === 0 ? 'true' : 'false'}"
+                aria-label="Slide ${i + 1}"></button>
+            `;
+        });
+
+        carouselInner.innerHTML = slidesHtml;
+        if (indicatorsContainer) indicatorsContainer.innerHTML = indicatorsHtml;
+    }
+
+    function initCarousel() {
+        const carouselElement = document.getElementById('galleryCarousel');
+        if (carouselElement) {
+            if (carouselInstance) carouselInstance.dispose();
+            carouselInstance = new bootstrap.Carousel(carouselElement, {
+                interval: false,
+                wrap: true,
+                touch: true
+            });
+        }
+    }
+
+    function setActiveSlide(index) {
+        if (carouselInstance) {
+            carouselInstance.to(index);
+        }
+        const indicators = document.querySelectorAll('#carouselIndicators button');
+        indicators.forEach((btn, i) => {
+            btn.classList.toggle('active', i === index);
+            btn.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+    }
+
+    const modalElement = document.getElementById('galleryModal');
+    let currentModal = null;
+    if (modalElement) {
+        currentModal = new bootstrap.Modal(modalElement, {
+            backdrop: 'static',
+            keyboard: true
+        });
+    }
+
+    galleryItems.forEach((item, idx) => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const index = parseInt(item.getAttribute('data-index'), 10) || idx;
+            if (!carouselInner.children.length) {
+                buildCarouselOnce();
+                initCarousel();
+            }
+            setActiveSlide(index);
+            if (currentModal) currentModal.show();
+        });
+    });
+
+    const closeBtn = document.getElementById('closeModalBtn');
+    if (closeBtn && currentModal) {
+        closeBtn.addEventListener('click', () => currentModal.hide());
+    }
+
+    const carouselElem = document.getElementById('galleryCarousel');
+    if (carouselElem) {
+        carouselElem.addEventListener('slid.bs.carousel', function () {
+            const items = carouselInner.children;
+            let activeIndex = -1;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].classList.contains('active')) {
+                    activeIndex = i;
+                    break;
+                }
+            }
+            const indicators = document.querySelectorAll('#carouselIndicators button');
+            indicators.forEach((btn, i) => {
+                btn.classList.toggle('active', i === activeIndex);
+                btn.setAttribute('aria-current', i === activeIndex ? 'true' : 'false');
+            });
+        });
+    }
+
+    buildCarouselOnce();
+    initCarousel();
+})();
+</script>

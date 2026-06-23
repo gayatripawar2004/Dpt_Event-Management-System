@@ -1,0 +1,217 @@
+<%- include('../sidebar') %>
+
+<style>
+    .stats-card:hover {
+        transform: translateY(-3px);
+    }
+    .table th {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    .detail-card {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .btn-close-white {
+        filter: brightness(0) invert(1);
+    }
+</style>
+
+<div class="container-fluid px-4 mt-3">
+    
+   
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-white py-4">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fas fa-user-graduate text-primary me-2"></i>
+                        Pending Student Requests
+                    </h3>
+                    <p class="text-muted mb-0 mt-2">
+                        <i class="fas fa-info-circle me-1"></i> 
+                        Verify and manage student registration requests
+                    </p>
+                </div>
+                <div class="col-auto">
+                    <span class="badge bg-warning text-dark px-3 py-2 fs-6">
+                        <i class="fas fa-clock me-1"></i> 
+                        <%= students.length %> Pending
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- स्टुडंट्स लिस्ट (साधी टेबल) -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="5%">#</th>
+                            <th width="20%">Name</th>
+                            <th width="20%">Email</th>
+                            <th width="15%">PRN</th>
+                            <th width="15%">Department</th>
+                            <th width="10%">Year</th>
+                            <th width="15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(students.length === 0) { %>
+                            <tr>
+                                <td colspan="7" class="text-center py-5">
+                                    <i class="fas fa-check-circle fa-3x text-success mb-2 d-block"></i>
+                                    <h5>No Pending Requests</h5>
+                                    <p class="text-muted">All student requests have been processed</p>
+                                </td>
+                            </tr>
+                        <% } else { %>
+                            <% students.forEach((s, index) => { %>
+                                <tr>
+                                    <td class="align-middle fw-bold"><%= index + 1 %></td>
+                                    <td class="align-middle">
+                                        <i class="fas fa-user-circle text-primary me-2"></i>
+                                        <%= s.name %>
+                                    </td>
+                                    <td class="align-middle"><%= s.email %></td>
+                                    <td class="align-middle">
+                                        <code class="bg-light p-1 rounded"><%= s.prn %></code>
+                                    </td>
+                                    <td class="align-middle"><%= s.department %></td>
+                                    <td class="align-middle">
+                                        <span class="badge bg-secondary"><%= s.year %></span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <!-- VIEW BUTTON -->
+                                        <button class="btn btn-info btn-sm me-1"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#viewModal<%= s.id %>"
+                                                title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+
+                                        <!-- APPROVE -->
+                                        <a href="/admin/approve-student/<%= s.id %>"
+                                           class="btn btn-success btn-sm me-1"
+                                           onclick="return confirm('Are you sure you want to APPROVE this student?')"
+                                           title="Approve">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+
+                                        <!-- REJECT -->
+                                        <a href="/admin/reject-student/<%= s.id %>"
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Are you sure you want to REJECT this student?')"
+                                           title="Reject">
+                                            <i class="fas fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <!-- MODAL -->
+                                <div class="modal fade" id="viewModal<%= s.id %>" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="fas fa-id-card me-2"></i>
+                                                    Student Complete Details
+                                                </h5>
+                                                <button type="button" class="btn-close btn-close-white"
+                                                        data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="text-center mb-4">
+                                                    <div class="bg-light rounded-circle d-inline-flex p-3">
+                                                        <i class="fas fa-user-graduate fa-3x text-primary"></i>
+                                                    </div>
+                                                    <h5 class="mt-2 mb-0"><%= s.name %></h5>
+                                                    <small class="text-muted">Registration Pending</small>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-envelope text-primary me-2"></i>
+                                                            <strong>Email Address</strong><br>
+                                                            <%= s.email %>
+                                                        </div>
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-phone text-primary me-2"></i>
+                                                            <strong>Mobile Number</strong><br>
+                                                            <%= s.mobile %>
+                                                        </div>
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-id-card text-primary me-2"></i>
+                                                            <strong>PRN Number</strong><br>
+                                                            <code><%= s.prn %></code>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-building text-primary me-2"></i>
+                                                            <strong>Department</strong><br>
+                                                            <%= s.department %>
+                                                        </div>
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                                            <strong>Current Year</strong><br>
+                                                            <%= s.year %>
+                                                        </div>
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-calendar text-primary me-2"></i>
+                                                            <strong>Registration Date</strong><br>
+                                                            <%= new Date(s.created_at).toLocaleDateString() %>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="detail-card">
+                                                            <i class="fas fa-users text-primary me-2"></i>
+                                                            <strong>Parent / Guardian Details</strong><br>
+                                                            <strong>Name:</strong> <%= s.parents_name || 'Not provided' %><br>
+                                                            <strong>Mobile:</strong> <%= s.parents_mobile || 'Not provided' %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <a href="/admin/approve-student/<%= s.id %>"
+                                                   class="btn btn-success"
+                                                   onclick="return confirm('Approve this student?')">
+                                                    <i class="fas fa-check-circle me-1"></i> Approve
+                                                </a>
+                                                <a href="/admin/reject-student/<%= s.id %>"
+                                                   class="btn btn-danger"
+                                                   onclick="return confirm('Reject this student?')">
+                                                    <i class="fas fa-times-circle me-1"></i> Reject
+                                                </a>
+                                                <button class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    <i class="fas fa-times me-1"></i> Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</main>
+<%- include('../footer') %>

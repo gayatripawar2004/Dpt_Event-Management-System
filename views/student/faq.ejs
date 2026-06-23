@@ -1,0 +1,92 @@
+
+<%- include('navbar.ejs') %>
+
+<link rel="stylesheet" href="/css/student/faq.css">
+
+<!-- Page Header -->
+<section class="page-header" style="background-image: url('/images/background image.jpg');">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Frequently Asked Questions</h1>
+        <p class="lead fw-bold">Find answers to common queries about events and portal usage</p>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section py-5">
+    <div class="container">
+        <div class="faq-card">
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    How do I register for an event?
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>You can register by visiting the Events page, selecting an event, and clicking on the register button.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Is event registration free?
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Some events are free, while others may require a nominal fee depending on the event type.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Can I cancel my registration?
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, you can cancel before the event deadline by contacting the organizers.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Will I receive a certificate?
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Certificates are provided for selected events based on participation and performance.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    How can I contact the organizers?
+                    <span>+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>You can use the Contact page or reach out via the email provided on the website.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<%- include('footer.ejs') %>
+
+<script>
+    const questions = document.querySelectorAll(".faq-question");
+
+    questions.forEach(q => {
+        q.addEventListener("click", () => {
+            const answer = q.nextElementSibling;
+            q.classList.toggle("active");
+
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                q.querySelector("span").innerText = "+";
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                q.querySelector("span").innerText = "−";
+            }
+        });
+    });
+</script>

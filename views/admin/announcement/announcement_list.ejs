@@ -1,0 +1,51 @@
+<%- include('../sidebar') %>
+
+<div class="admin-content">
+    <h2 class="mb-4">Announcement List</h2>
+
+    <a href="/admin/announcement" class="btn btn-primary mb-3">Add New</a>
+
+    <table class="table table-bordered shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% announcements.forEach(a => { %>
+                <tr>
+                    <td><%= a.id %></td>
+                 <td>
+    
+        <%- a.title %>
+   
+</td>
+                    <td><%= new Date(a.created_at).toLocaleDateString() %></td>
+                    <td>
+    <span class="badge <%= a.status === 'active' ? 'bg-success' : 'bg-secondary' %>">
+        <%= a.status %>
+    </span>
+</td>
+
+<td>
+    <a href="/admin/announcement/edit/<%= a.id %>" class="btn btn-warning btn-sm">Edit</a>
+
+    <a href="/admin/announcement/delete/<%= a.id %>" 
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Delete this announcement?')">
+       Delete
+    </a>
+</td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+</main>
+<%- include('../footer') %>

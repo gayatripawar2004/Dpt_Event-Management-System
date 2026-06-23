@@ -1,0 +1,21 @@
+<%- include('../sidebar') %>
+
+<div class="admin-content">
+    <h2>Alumni Details</h2>
+
+    <div class="card p-4">
+        <img src="/uploads/<%= alumni.image %>" width="120" class="mb-3">
+
+        <p><strong>Name:</strong> <%= alumni.name %></p>
+        <p><strong>Email:</strong> <%= alumni.email %></p>
+        <p><strong>Batch:</strong> <%= alumni.batch %></p>
+        <p><strong>Designation:</strong> <%= alumni.designation %></p>
+        <p><strong>Company:</strong> <%= alumni.company %></p>
+        <p><strong>Message:</strong> <%= alumni.quote %></p>
+        <p><strong>Status:</strong> <%= alumni.status %></p>
+    </div>
+
+    <a href="/admin/alumni" class="btn btn-secondary mt-3">Back</a>
+</div>
+
+<%- include('../footer') %>

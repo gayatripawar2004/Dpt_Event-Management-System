@@ -1,0 +1,62 @@
+
+        .admin-content {
+            flex: 1;
+            padding: 1.8rem;
+        }
+        /* Cards */
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: 0.2s;
+            height: 100%;
+        }
+        .stat-card:hover { transform: translateY(-3px); }
+        .stat-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-right: 1rem;
+        }
+        .stat-info h3 { font-size: 1.8rem; font-weight: 700; margin: 0; }
+        .stat-info p { margin: 0; color: #6c757d; font-size: 0.85rem; }
+        .bg-primary { background: #0d6efd; }
+        .bg-success { background: #198754; }
+        .bg-info { background: #0dcaf0; color: #000; }
+        .bg-warning { background: #ffc107; color: #000; }
+        .bg-danger { background: #dc3545; }
+        .bg-secondary { background: #6c757d; }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #eef2f6;
+            font-weight: 600;
+        }
+        .quick-action-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .quick-action-btn:hover { transform: translateY(-2px); }
+      
+        @media (max-width: 768px) {
+            .admin-sidebar { left: -260px; }
+            .admin-sidebar.open { left: 0; }
+            .admin-main { margin-left: 0; }
+            .sidebar-toggle-btn { display: block; }
+        }
+  

@@ -1,0 +1,117 @@
+<%- include('../sidebar.ejs') %>
+
+<style>
+    .admin-content {
+        flex: 1;
+        padding: 1.8rem;
+        background: #f8fafc;
+    }
+
+    .card {
+        border: none;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05),
+                    0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-header {
+        background: white;
+        border-bottom: 2px solid #eef2ff;
+        padding: 1.2rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #1e293b;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 0.75rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid #e2e8f0;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+
+    .btn-primary {
+        background: #0d6efd;
+        border: none;
+        padding: 0.5rem 1.8rem;
+        border-radius: 2rem;
+    }
+
+    .btn-secondary {
+        background: #64748b;
+        border: none;
+        padding: 0.5rem 1.8rem;
+        border-radius: 2rem;
+    }
+
+    .preview-img {
+        width: 180px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="admin-content">
+    <div class="container mt-4">
+        <h2 class="mb-4"><%= gallery ? 'Edit Gallery Image' : 'Add Gallery Image' %></h2>
+
+        <form action="<%= gallery ? '/admin/update-gallery/' + gallery.id : '/admin/add-gallery' %>" method="POST" enctype="multipart/form-data">
+            
+            <% if (gallery && gallery.image) { %>
+                <input type="hidden" name="existingImage" value="<%= gallery.image %>">
+            <% } %>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Title *</label>
+                    <input type="text" name="title" class="form-control" value="<%= gallery ? gallery.title : '' %>" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Event Date</label>
+                    <input type="date" name="event_date" class="form-control"
+                        value="<%= gallery && gallery.event_date ? gallery.event_date.toISOString().split('T')[0] : '' %>">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" rows="3" class="form-control"><%= gallery ? gallery.description : '' %></textarea>
+            </div>
+
+            <!-- Image Upload / Preview -->
+            <div class="mb-3">
+                <label class="form-label">Gallery Image</label>
+
+                <% if (gallery && gallery.image) { %>
+                    <div class="mb-2">
+                        <img src="/uploads/<%= gallery.image %>" class="preview-img">
+                        <p class="text-muted">Current image. Upload new to replace.</p>
+                    </div>
+                <% } %>
+
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <%= gallery ? 'Update Image' : 'Add Image' %>
+            </button>
+
+            <a href="/admin/gallery_list" class="btn btn-secondary">Cancel</a>
+
+        </form>
+    </div>
+</div>
+
+<%- include('../footer.ejs') %>

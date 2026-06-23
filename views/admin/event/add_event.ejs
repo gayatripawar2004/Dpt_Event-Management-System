@@ -1,0 +1,216 @@
+<%- include('../sidebar.ejs') %>
+
+<style>
+    .admin-content {
+        flex: 1;
+        padding: 1.8rem;
+        background: #f8fafc;
+    }
+
+    .card {
+        border: none;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05),
+                    0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-header {
+        background: white;
+        border-bottom: 2px solid #eef2ff;
+        padding: 1.2rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #1e293b;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 0.75rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+
+    .btn-primary {
+        background: #0d6efd;
+        border: none;
+        padding: 0.5rem 1.8rem;
+        border-radius: 2rem;
+        font-weight: 500;
+    }
+
+    .btn-primary:hover {
+        background: #0b5ed7;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-secondary {
+        background: #64748b;
+        border: none;
+        padding: 0.5rem 1.8rem;
+        border-radius: 2rem;
+    }
+
+    .form-text {
+        font-size: 0.8rem;
+        color: #64748b;
+    }
+
+    .preview-img {
+        width: 180px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .admin-content {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<div class="admin-content">
+    <div class="container mt-4">
+        <h2 class="mb-4"><%= event ? 'Edit Event' : 'Add New Event' %></h2>
+
+        <!-- Dynamic form action -->
+        <form action="<%= event ? '/admin/update-event/' + event.id : '/admin/add-event' %>" method="POST" enctype="multipart/form-data">
+            
+            <!-- Hidden field for existing image (used when editing) -->
+            <% if (event && event.image) { %>
+                <input type="hidden" name="existingImage" value="<%= event.image %>">
+            <% } %>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Event Title *</label>
+                    <input type="text" name="title" class="form-control" value="<%= event ? event.title : '' %>" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Date *</label>
+                    <input type="date" name="date" class="form-control" value="<%= event && event.date ? event.date.toISOString().split('T')[0] : '' %>" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Time</label>
+                    <input type="text" name="time" class="form-control" placeholder="10:00 AM - 4:00 PM" value="<%= event ? event.time : '' %>">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Venue</label>
+                    <input type="text" name="venue" class="form-control" value="<%= event ? event.venue : '' %>">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Seats</label>
+                    <input type="number" name="seats" class="form-control" value="<%= event ? event.seats : '' %>">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Registration Deadline</label>
+                    <input type="date" name="registrationDeadline" class="form-control" value="<%= event && event.registrationDeadline ? event.registrationDeadline.toISOString().split('T')[0] : '' %>">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Organizer</label>
+                    <input type="text" name="organizer" class="form-control" value="<%= event ? event.organizer : '' %>">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" name="contactEmail" class="form-control" value="<%= event ? event.contactEmail : '' %>">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="text" name="contactPhone" class="form-control" value="<%= event ? event.contactPhone : '' %>">
+                </div>
+            </div>
+            
+            <div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-control">
+            <option value="active" <%= event && event.status === 'active' ? 'selected' : '' %>>Active</option>
+            <option value="inactive" <%= event && event.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+            <option value="completed" <%= event && event.status === 'completed' ? 'selected' : '' %>>Completed</option>
+        </select>
+        <div class="form-text">Set event visibility and completion state.</div>
+    </div>
+</div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="description" rows="4" class="form-control"><%= event ? event.description : '' %></textarea>
+            </div>
+
+            <!-- Image Upload / Preview -->
+            <div class="mb-3">
+                <label class="form-label">Event Image</label>
+                <% if (event && event.image) { %>
+                    <div class="mb-2">
+                        <img src="/uploads/<%= event.image %>" alt="Current Image" class="preview-img">
+                        <p class="form-text mt-1">Current image. Upload a new one to replace.</p>
+                    </div>
+                <% } %>
+                <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+
+            <button type="submit" class="btn btn-primary"><%= event ? 'Update Event' : 'Add Event' %></button>
+            <a href="/admin/event_list" class="btn btn-secondary">Cancel</a>
+
+        </form>
+        
+           </form>
+
+        <!-- Registration Fields - shown only when editing -->
+       <!-- Registration Fields - shown only when editing -->
+<% if (event) { %>
+    <div class="card mb-3 my-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>📝 Registration Fields</span>
+            <a href="/admin/event-fields/<%= event.id %>" class="btn btn-sm btn-primary">
+                + Manage Fields
+            </a>
+        </div>
+        <div class="card-body">
+            <% if (fields && fields.length > 0) { %>
+                <div class="row">
+                    <% fields.forEach(field => { %>
+                        <div class="col-md-4 mb-2">
+                            <div class="border rounded p-2 bg-light">
+                                <strong><%= field.field_label %></strong><br>
+                                <small class="text-muted">Type: <%= field.field_type %></small>
+                                <% if (field.is_required) { %>
+                                    <span class="badge bg-danger ms-2">Required</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p class="text-muted mb-0">No custom fields added yet.</p>
+            <% } %>
+        </div>
+    </div>
+<% } %>
+
+    </div>
+</div>
+
+    
+    </div>
+</div>
+
+<%- include('../footer.ejs') %>

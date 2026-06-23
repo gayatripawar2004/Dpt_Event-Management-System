@@ -1,0 +1,147 @@
+<%- include('../sidebar') %>
+    <style>
+        .faculty-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: move;
+            transition: all 0.3s;
+        }
+        .faculty-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+        }
+        .faculty-card.dragging {
+            opacity: 0.5;
+        }
+        .faculty-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .drag-handle {
+            cursor: grab;
+            color: #999;
+            font-size: 20px;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        .sortable-placeholder {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            height: 120px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+
+
+<div class="container-fluid px-4 mt-3">
+    
+    <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <% if (error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-chalkboard-user me-2"></i> Manage Faculty</h2>
+        <a href="/admin/faculty/add" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> Add New Faculty
+        </a>
+    </div>
+
+    <div class="alert alert-info">
+        <i class="fas fa-arrows-alt me-2"></i> 
+        <strong>Drag and Drop</strong> to reorder faculty members. Order will reflect on student side.
+    </div>
+
+    <div class="row" id="faculty-sortable">
+        <% if(faculty && faculty.length > 0) { %>
+            <% faculty.forEach(f => { %>
+                <div class="col-md-6 col-lg-4" data-id="<%= f.id %>">
+                    <div class="faculty-card">
+                        <div class="d-flex align-items-start">
+                            <div class="drag-handle me-3">
+                                <i class="fas fa-grip-vertical"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1"><%= f.name %></h5>
+                                <p class="text-muted mb-1"><%= f.designation %></p>
+                                <% if(f.qualification) { %>
+                                    <small class="text-secondary"><%= f.qualification %></small><br>
+                                <% } %>
+                                <% if(f.specialization) { %>
+                                    <small class="text-secondary"><%= f.specialization %></small>
+                                <% } %>
+                            </div>
+                            <div>
+                                <a href="/admin/faculty/edit/<%= f.id %>" class="btn btn-sm btn-info me-1">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="/admin/faculty/delete/<%= f.id %>" class="btn btn-sm btn-danger" 
+                                   onclick="return confirm('Delete <%= f.name %>?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <div class="col-12 text-center py-5">
+                <p>No faculty members found. <a href="/admin/faculty/add">Add your first faculty member</a></p>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    $(function() {
+        $("#faculty-sortable").sortable({
+            handle: '.drag-handle',
+            placeholder: "col-md-6 col-lg-4 sortable-placeholder",
+            opacity: 0.6,
+            update: function(event, ui) {
+                var order = [];
+                $("#faculty-sortable .col-md-6, #faculty-sortable .col-lg-4").each(function() {
+                    order.push($(this).data('id'));
+                });
+                
+                $.ajax({
+                    url: '/admin/faculty/update-order',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ order: order }),
+                    success: function(response) {
+                        if(response.success) {
+                            showToast('Order updated successfully!', 'success');
+                        } else {
+                            showToast('Error: ' + response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showToast('Error updating order', 'error');
+                    }
+                });
+            }
+        });
+        
+        function showToast(message, type) {
+            var toast = $('<div class="alert alert-' + (type === 'success' ? 'success' : 'danger') + ' alert-dismissible fade show position-fixed" style="top:20px;right:20px;z-index:9999">' +
+                message + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+            $('body').append(toast);
+            setTimeout(function() { toast.alert('close'); }, 3000);
+        }
+    });
+</script>
+
+<%- include('../footer') %>

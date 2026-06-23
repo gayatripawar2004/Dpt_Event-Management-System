@@ -1,0 +1,105 @@
+<%- include('../sidebar') %>
+
+<style>
+    .admin-content {
+        flex: 1;
+        padding: 1.8rem;
+        background: #f8fafc;
+    }
+
+    .card {
+        border: none;
+        border-radius: 1rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    .table th {
+        background: #f1f5f9;
+        font-weight: 600;
+    }
+
+    .badge-position {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .pos-1 { background: gold; color: #000; }
+    .pos-2 { background: silver; color: #000; }
+    .pos-3 { background: #cd7f32; color: #fff; }
+</style>
+
+<div class="admin-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🏆 Event Results</h2>
+        <a href="/admin/event-results" class="btn btn-primary">
+            + Add Result
+        </a>
+    </div>
+
+    <div class="card p-3">
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Event</th>
+                        <th>Student Name</th>
+                        <th>Branch</th>
+                        <th>Year</th>
+                        <th>Position</th>
+                        <th>Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if(results.length > 0){ %>
+                        <% results.forEach((r, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+                                <td><%= r.title %></td>
+                                <td><%= r.name %></td>
+                                <td><%= r.branch %></td>
+                                <td><%= r.year %></td>
+
+                                <td>
+                                    <span class="badge-position 
+                                        <%= r.position === '1st' ? 'pos-1' : 
+                                            r.position === '2nd' ? 'pos-2' : 'pos-3' %>">
+                                        <%= r.position %>
+                                    </span>
+                                </td>
+
+                                <td><%= r.score || '-' %></td>
+
+                                <td>
+                                    <a href="/admin/edit-result/<%= r.id %>" class="btn btn-sm btn-warning">
+    Edit
+</a>
+                                    <a href="/admin/delete-result/<%= r.id %>" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Delete this result?')">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="8">
+                                <div class="text-muted py-3">
+                                    No results added yet.
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+</main>
+<%- include('../footer') %>

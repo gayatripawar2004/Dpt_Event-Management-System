@@ -1,0 +1,146 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f8f9fa;
+}
+
+/* ================= HEADER ================= */
+.top-header {
+    background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6f 100%);
+    color: white;
+    padding: 12px 0;
+    margin-bottom: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-bottom: 3px solid #ff7e05;
+}
+
+.college-logo {
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #ffc107;
+    background: white;
+    padding: 4px;
+}
+
+.naac-logo {
+    height: 100px;
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.top-header .row > div:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.college-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.dept-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    background: white !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 12px 0;
+}
+
+/* Normal nav links */
+.navbar-nav .nav-link {
+    font-weight: 600;
+    color: #1e3c5c !important;
+    margin: 0 10px;
+    transition: 0.3s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ff7e05 !important;
+}
+
+/* Login Button */
+.login-btn {
+    background: #ff7e05;
+    border: none;
+    padding: 8px 25px;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.login-btn:hover {
+    background: #e06700;
+    transform: translateY(-2px);
+}
+
+/* ================= USER DROPDOWN BUTTON ================= */
+/* Bootstrap override fix */
+.navbar-nav .nav-link.user-dropdown-toggle {
+    background: #ff7e05;
+    border: none;
+    padding: 8px 20px;
+    font-weight: 600;
+    border-radius: 30px;
+    color: white !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Hover */
+.navbar-nav .nav-link.user-dropdown-toggle:hover {
+    background: #e06700;
+    transform: translateY(-2px);
+    color: white !important;
+}
+
+.user-dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.user-dropdown-toggle i {
+    font-size: 1.1rem;
+}
+
+
+.dropdown-menu {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: none;
+    margin-top: 10px;
+    right: 0;
+    left: auto;
+}
+
+.dropdown-item {
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: 0.2s;
+    border-bottom: 1px solid #605959;
+}
+
+.dropdown-item i {
+    margin-right: 8px;
+    width: 20px;
+}
+
+.dropdown-item:hover {
+    background-color: #ffefe3;
+    color: #ff7e05;
+}
+
+.dropdown-divider {
+    margin: 4px 0;
+}

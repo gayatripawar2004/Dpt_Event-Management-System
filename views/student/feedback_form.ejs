@@ -1,0 +1,157 @@
+<%- include('navbar.ejs') %>
+
+<style>
+    /* feedback.css - Student Feedback Page */
+
+/* Page container */
+.feedback-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Feedback card */
+.feedback-card {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: transform 0.2s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Heading */
+.feedback-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    border-left: 5px solid #0d6efd;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form labels */
+.form-label {
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Inputs, selects, textarea */
+.form-control, .form-select {
+    border-radius: 0.75rem;
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s;
+    background-color: #fff;
+    width: 100%;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    outline: none;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 2rem;
+    font-weight: 500;
+    transition: all 0.3s;
+    box-shadow: 0 2px 5px rgba(13, 110, 253, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(13, 110, 253, 0.25);
+    background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+}
+
+.btn-secondary {
+    background: #64748b;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 2rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+    transform: translateY(-2px);
+}
+
+/* Star rating (optional enhancement) */
+.rating-select {
+    font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .feedback-card {
+        padding: 1.5rem;
+    }
+    .feedback-card h2 {
+        font-size: 1.5rem;
+    }
+    .btn-primary, .btn-secondary {
+        padding: 0.5rem 1.5rem;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    .d-flex {
+        flex-direction: column;
+    }
+}
+</style>
+
+<div class="container feedback-container">
+    <div class="feedback-card">
+        <h2>Feedback for <%= event.title %></h2>
+
+        <form action="/submit-feedback" method="POST">
+            <input type="hidden" name="event_id" value="<%= event.id %>">
+
+            <div class="mb-3">
+                <label class="form-label">Your Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Rating</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Select</option>
+                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ Good</option>
+                    <option value="3">⭐⭐⭐ Average</option>
+                    <option value="2">⭐⭐ Poor</option>
+                    <option value="1">⭐ Very Poor</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Your Feedback</label>
+                <textarea name="message" rows="4" class="form-control" required></textarea>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                <a href="/events" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

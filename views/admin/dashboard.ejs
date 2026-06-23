@@ -1,0 +1,425 @@
+<link rel="stylesheet" href="/css/admin/dashboard.css">
+
+<%- include('sidebar') %>
+
+    <div class="admin-content">
+
+        <h1 class="h3 mb-4">Dashboard</h1>
+
+        <!-- TOP STATS -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon bg-primary">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= totalEvents %>
+                        </h3>
+                        <p>📅 Total Events</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon bg-success">
+                        <i class="fas fa-users"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= totalStudents %>
+                        </h3>
+                        <p>👥 Students Participated</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon bg-info">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= totalAlumni %>
+                        </h3>
+                        <p>👨‍🎓 Alumni Registered</p>
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+
+        <!-- SECOND ROW -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon bg-danger">
+                        <i class="fas fa-clock"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= upcomingEvents %>
+                        </h3>
+                        <p>📅 Upcoming Events</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon bg-secondary">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= completedEvents %>
+                        </h3>
+                        <p>✔️ Completed Events</p>
+                    </div>
+                </div>
+            </div>
+
+          <div class="col-md-4 col-sm-6">
+                <div class="stat-card">
+                    <div class="stat-icon bg-warning">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <h3>
+                            <%= totalAnnouncements %>
+                        </h3>
+                        <p>📢 Announcements</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- CHART + TOP EVENT -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-7">
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-header">
+                        📊 Events per Month
+                    </div>
+
+                    <div class="card-body">
+
+                        <canvas id="eventsChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <div class="card shadow-sm h-100">
+
+                    <div class="card-header">
+                        🔔 Latest Notifications
+                    </div>
+
+                    <div class="card-body">
+
+                        <% if(notifications.length> 0) { %>
+
+                            <% notifications.forEach(notification=> { %>
+
+                                <div class="alert alert-light border mb-2">
+
+                                    <strong>
+                                        <%= notification.title %>
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        <%= notification.message %>
+                                    </small>
+
+                                </div>
+
+                                <% }) %>
+
+                                    <% } else { %>
+
+                                        <div class="text-center text-muted">
+
+                                            No notifications found
+
+                                        </div>
+
+                                        <% } %>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-header">
+
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+
+                    </div>
+
+                    <div class="card-body d-flex flex-wrap gap-2">
+
+                        <a href="/admin/add_event" class="btn btn-primary quick-action-btn">
+
+                            <i class="fas fa-plus-circle"></i>
+                            Add Event
+
+                        </a>
+
+                        <a href="/admin/add_gallery" class="btn btn-success quick-action-btn">
+
+                            <i class="fas fa-upload"></i>
+                            Upload Image
+
+                        </a>
+
+                        <a href="/admin/announcement" class="btn btn-warning quick-action-btn">
+
+                            <i class="fas fa-bullhorn"></i>
+                            Add Announcement
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-header">
+
+                        <i class="fas fa-bell"></i>
+                        Unread Notifications
+
+                    </div>
+
+                    <div class="card-body text-center">
+
+                        <h1 class="display-5">
+
+                            <%= unreadCount %>
+
+                        </h1>
+
+                        <p class="text-muted">
+
+                            Pending Notifications
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RECENT EVENTS -->
+        <div class="card shadow-sm">
+
+            <div class="card-header">
+
+                📅 Recent Events
+
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover mb-0">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <% if(recentEvents.length> 0) { %>
+
+                                <% recentEvents.forEach(event=> { %>
+
+                                    <tr>
+
+                                        <td>
+                                            <%= event.title %>
+                                        </td>
+
+                                        <td>
+
+                                            <%= new Date(event.date).toLocaleDateString() %>
+
+                                        </td>
+
+                                     <td>
+
+    <% if(event.status === 'active') { %>
+
+        <span class="badge bg-success">
+            Upcoming
+        </span>
+
+    <% } else if(event.status === 'completed') { %>
+
+        <span class="badge bg-secondary">
+            Completed
+        </span>
+
+    <% } else { %>
+
+        <span class="badge bg-warning">
+            <%= event.status %>
+        </span>
+
+    <% } %>
+
+</td>
+
+                                        <td>
+
+                                            <a href="/admin/event-details/<%= event.id %>" 
+                                                class="btn btn-primary">
+
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                               
+
+                                            </a>
+
+                                        </td>
+
+                                    </tr>
+
+                                    <% }) %>
+
+                                        <% } else { %>
+
+                                            <tr>
+
+                                                <td colspan="4" class="text-center py-4">
+
+                                                    No Events Found
+
+                                                </td>
+
+                                            </tr>
+
+                                            <% } %>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const monthlyData = <%- JSON.stringify(monthlyEvents) %>;
+
+        const labels = [
+            'Jan', 'Feb', 'Mar', 'Apr',
+            'May', 'Jun', 'Jul', 'Aug',
+            'Sep', 'Oct', 'Nov', 'Dec'
+        ];
+
+        let eventCounts = new Array(12).fill(0);
+
+        monthlyData.forEach(item => {
+
+            eventCounts[item.month - 1] = item.total;
+
+        });
+
+        const ctx = document
+            .getElementById('eventsChart')
+            .getContext('2d');
+
+        new Chart(ctx, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: labels,
+
+                datasets: [{
+
+                    label: 'Events',
+
+                    data: eventCounts,
+
+                    backgroundColor: '#0d6efd',
+
+                    borderRadius: 8
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: true
+
+            }
+
+        });
+
+    </script>
+
+    <%- include('footer') %>

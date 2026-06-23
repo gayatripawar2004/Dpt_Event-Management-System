@@ -1,0 +1,86 @@
+<%- include('navbar.ejs') %>
+<link rel="stylesheet" href="/css/student/event.css">
+
+<!-- Page Header -->
+<section class="page-header" style="background-image: url('/uploads/<%= header.image %>'); background-size: cover; background-position: center;">
+    <div class="container text-white">
+        <h1 class="display-4 fw-bold"><%= header.title %></h1>
+        <p class="lead fw-bold"><%= header.subtitle %></p>
+    </div>
+</section>
+
+<!-- Upcoming Events Section -->
+<section class="py-4">
+    <div class="container">
+        <h2 class="mb-4 border-start border-primary border-4 ps-3">Upcoming Events</h2>
+        <div class="row g-4">
+            <% if (upcomingEvents && upcomingEvents.length > 0) { %>
+                <% upcomingEvents.forEach(event => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="event-card h-100">
+                            <img src="/uploads/<%= event.image %>" class="event-img" alt="<%= event.title %>" onerror="this.src='/images/default-event.jpg'">
+                            <div class="event-body">
+                                <h5 class="event-title"><%= event.title %></h5>
+                                <div class="event-meta">
+                                    <i class="fas fa-calendar-alt"></i> <%= event.date ? new Date(event.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'TBD' %>
+                                </div>
+                                <div class="event-meta">
+                                    <i class="fas fa-map-marker-alt"></i> <%= event.venue || 'Online' %>
+                                </div>
+                                <div class="event-meta">
+                                    <i class="fas fa-chair"></i> Seats: <span class="seats"><%= event.seats %></span>
+                                </div>
+                                <p class="mt-2"><%= event.description ? event.description.substring(0, 100) + (event.description.length > 100 ? '...' : '') : 'No description available.' %></p>
+                                <a href="/event-details?id=<%= event.id %>" class="btn-view mt-2">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-info">No upcoming events at the moment. Check back soon!</div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<!-- Completed Events Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <h2 class="mb-4 border-start border-secondary border-4 ps-3">Completed Events</h2>
+        <div class="row g-4">
+            <% if (completedEvents && completedEvents.length > 0) { %>
+                <% completedEvents.forEach(event => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="event-card h-100 opacity-75">
+                            <img src="/uploads/<%= event.image %>" class="event-img" alt="<%= event.title %>" onerror="this.src='/images/default-event.jpg'">
+                            <div class="event-body">
+                                <h5 class="event-title"><%= event.title %></h5>
+                                <div class="event-meta">
+                                    <i class="fas fa-calendar-alt"></i> <%= event.date ? new Date(event.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'TBD' %>
+                                </div>
+                                <div class="event-meta">
+                                    <i class="fas fa-map-marker-alt"></i> <%= event.venue || 'Online' %>
+                                </div>
+                                <p class="mt-2"><%= event.description ? event.description.substring(0, 100) + (event.description.length > 100 ? '...' : '') : 'No description available.' %></p>
+                               <span class="badge bg-secondary">Completed</span>
+
+<a href="/event-details?id=<%= event.id %>" class="btn-view mt-2">
+    View Details
+</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="alert alert-secondary">No completed events to display.</div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</section>
+
+<%- include('footer.ejs') %>

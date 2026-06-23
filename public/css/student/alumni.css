@@ -1,0 +1,165 @@
+.page-header {
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; 
+    object-fit: contain;
+    opacity: 0.6;
+}
+
+/* Alumni page specific styles */
+.alumni-section {
+    background: #f8f9fa;
+}
+
+.alumni-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.alumni-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.alumni-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff7e05;
+    margin-bottom: 15px;
+}
+
+.alumni-card h4 {
+    font-weight: 700;
+    color: #1e3c5c;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.batch {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.designation {
+    font-weight: 600;
+    color: #ff7e05;
+    margin-bottom: 5px;
+}
+
+.company {
+    font-size: 0.9rem;
+    color: #1e3c5c;
+    margin-bottom: 15px;
+}
+
+.quote {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Join Alumni CTA – professional & attractive */
+.join-alumni {
+    background: linear-gradient(135deg, #f8f9fc 0%, #eef2f7 100%);
+    padding: 60px 0;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.join-card {
+    background: white;
+    border-radius: 20px;
+    padding: 45px 35px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.02);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+.join-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.join-card h2 {
+    color: #1e3c5c;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.join-card .lead {
+    color: #5a6e7c;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+.join-card .btn-primary {
+    background: #ff7e05;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(255,126,5,0.2);
+}
+.join-card .btn-primary:hover {
+    background: #e06700;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,126,5,0.3);
+}
+
+/* Modal form styling */
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header {
+    background: #1e3c5c;
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-footer .btn-primary {
+    background: #ff7e05;
+    border: none;
+}
+
+.modal-footer .btn-primary:hover {
+    background: #e06700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .alumni-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .join-card {
+        padding: 30px 20px;
+    }
+
+    .join-card h2 {
+        font-size: 1.5rem;
+    }
+}

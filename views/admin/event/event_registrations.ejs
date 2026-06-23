@@ -1,0 +1,38 @@
+<%- include('../sidebar.ejs') %>
+
+<div class="container mt-4">
+    <h3>Registered Students - <%= event.title %></h3>
+
+    <% if (registrations.length > 0) { %>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <% fields.forEach(f => { %>
+                            <th><%= f.field_label %></th>
+                        <% }) %>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% registrations.forEach((reg, index) => {
+                        let formData = typeof reg.form_data === 'string' ? JSON.parse(reg.form_data) : reg.form_data;
+                    %>
+                        <tr>
+                            <td><%= index+1 %></td>
+                            <% fields.forEach(f => { %>
+                                <td><%= formData[f.field_name] || 'N/A' %></td>
+                            <% }) %>
+                            <td><%= new Date(reg.created_at).toLocaleString() %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <p>No registrations found</p>
+    <% } %>
+</div>
+
+<%- include('../footer.ejs') %>

@@ -1,0 +1,52 @@
+<%- include('../sidebar.ejs') %>
+
+<div class="container mt-4">
+
+    <h3 class="mb-3">
+        Feedback for: <%= event ? event.title : 'Event' %>
+    </h3>
+
+    <% if(feedbacks.length > 0){ %>
+
+        <% feedbacks.forEach(f => { %>
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    
+                    <h5 class="mb-1">
+                        <%= f.name %> 
+                        <span class="text-warning">
+                            <% for(let i=1; i<=5; i++){ %>
+                                <% if(i <=f.rating){ %>
+                                    ⭐
+                                    <% } else { %>
+                                        ☆
+                                        <% } %>
+                                            <% } %>
+                                                (<%= f.rating %>/5)
+                            </span>
+                    </h5>
+
+                    <p class="mb-2"><%= f.message %></p>
+
+                    <small class="text-muted">
+                        <%= f.email %> | 
+                        <%= new Date(f.created_at).toLocaleDateString() %>
+                    </small>
+
+                </div>
+            </div>
+        <% }) %>
+
+    <% } else { %>
+
+        <div class="alert alert-info">
+            No feedback available for this event.
+        </div>
+
+    <% } %>
+
+    <a href="/admin/feedback" class="btn btn-secondary mt-3">Back</a>
+
+</div>
+
+<%- include('../footer.ejs') %>

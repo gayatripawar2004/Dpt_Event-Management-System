@@ -1,0 +1,117 @@
+<%- include('../sidebar.ejs') %>
+
+<style>
+    .admin-content {
+        flex: 1;
+        padding: 1.8rem;
+        background: #f8fafc;
+    }
+
+    .table-container {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .table img {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .btn-sm {
+        border-radius: 20px;
+        padding: 4px 12px;
+    }
+
+    .btn-edit {
+        background: #0d6efd;
+        color: white;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+</style>
+
+<div class="admin-content">
+    <div class="container">
+
+        <div class="table-container">
+            <div class="header">
+                <h3>Gallery List</h3>
+                <a href="/admin/add_gallery" class="btn btn-primary">+ Add Image</a>
+            </div>
+
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% if (gallery.length > 0) { %>
+                        <% gallery.forEach((item, index) => { %>
+                            <tr>
+                                <td><%= index + 1 %></td>
+
+                                <td>
+                                    <% if (item.image_url) { %>
+                                        <img src="/uploads/<%= item.image_url%>" alt="img">
+                                    <% } else { %>
+                                        No Image
+                                    <% } %>
+                                </td>
+
+                                <td><%= item.title %></td>
+
+                                <td>
+                                    <%= item.description ? item.description.substring(0, 50) : '' %>...
+                                </td>
+
+                                <td>
+                                    <%= item.event_date ? item.event_date.toISOString().split('T')[0] : '' %>
+                                </td>
+
+                                <td>
+                                    <a href="/admin/edit-gallery/<%= item.id %>" class="btn btn-sm btn-edit">Edit</a>
+
+                                    <a href="/admin/delete-gallery/<%= item.id %>" 
+                                       class="btn btn-sm btn-delete"
+                                       onclick="return confirm('Are you sure?')">
+                                       Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="6" class="text-center">No gallery images found</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<%- include('../footer.ejs') %>

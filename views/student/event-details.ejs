@@ -1,0 +1,141 @@
+<%- include('navbar.ejs') %>
+
+<link rel="stylesheet" href="/css/student/event-detail.css">
+
+<!-- Page Header -->
+<section class="page-header" style="background-image: url('/uploads/<%= event && event.image ? event.image : 'default.jpg' %>');">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Event Details</h1>
+        <p class="lead">Complete information about the selected event</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+
+            <% if(event){ %>
+
+            <div class="event-detail-card">
+                
+                <!-- Event Image -->
+                <img src="/uploads/<%= event.image %>" 
+                     class="event-detail-img" 
+                     alt="<%= event.title %>" 
+                     onerror="this.src='/images/default-event.jpg'">
+
+                <div class="event-info-body">
+
+                    <!-- Title -->
+                    <h2 class="event-title"><%= event.title %></h2>
+                    
+                    <!-- Meta Info -->
+                    <div class="event-meta-grid">
+
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <strong>Date</strong><br>
+                                <%= event.date ? new Date(event.date).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) : 'TBD' %>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <strong>Time</strong><br>
+                                <%= event.time || "Not specified" %>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Venue</strong><br>
+                                <%= event.venue || "Online" %>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <i class="fas fa-chair"></i>
+                            <div>
+                                <strong>Seats Available</strong><br>
+                                <span class="seats-count <%= event.seats <= 10 ? 'seats-low' : '' %>">
+                                    <%= event.seats || 0 %>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <strong>Organizer</strong><br>
+                                <%= event.organizer || "E&CE Department" %>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Contact</strong><br>
+                                <%= event.contactEmail || "N/A" %> | <%= event.contactPhone || "N/A" %>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Description -->
+                    <div class="description-section">
+                        <h5><i class="fas fa-file-alt me-2"></i>About the Event</h5>
+                        <p><%= event.description || "No description available." %></p>
+                    </div>
+
+                    <!-- Deadline -->
+                    <div class="deadline-info">
+                        <i class="fas fa-hourglass-half"></i> 
+                        Registration Deadline: 
+                        <%= event.registrationDeadline ? new Date(event.registrationDeadline).toLocaleDateString('en-GB') : 'Not specified' %>
+                    </div>
+
+                   <div class="action-buttons">
+    <a href="/event" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back to Events
+    </a>
+
+    <!-- Show Register button only if event NOT completed -->
+    <% if(event.status !== 'completed'){ %>
+        <a href="/event-register/<%= event.id %>" class="btn btn-primary btn-sm mt-2">
+            Register Now
+        </a>
+    <% } %>
+
+    <!-- Show Feedback button only if event completed -->
+    <% if(event.status === 'completed'){ %>
+        <a href="/event-feedback/<%= event.id %>" class="btn btn-success btn-sm mt-2">
+            Give Feedback
+        </a>
+    <% } %>
+</div>
+                </div>
+            </div>
+
+            <% } else { %>
+
+                <div class="alert alert-danger text-center">
+                    Event not found!
+                </div>
+
+            <% } %>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerBtn')?.addEventListener('click', () => {
+        alert("Registration feature coming soon!");
+    });
+</script>
+
+<%- include('footer.ejs') %>

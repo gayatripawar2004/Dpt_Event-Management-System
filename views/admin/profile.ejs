@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile - Department</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+        }
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .info-card h4 {
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .info-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: 600;
+            width: 150px;
+            color: #555;
+        }
+        .info-value {
+            flex: 1;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .alert {
+            border-radius: 10px;
+        }
+        .nav-tabs .nav-link {
+            color: #555;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            color: #667eea;
+            font-weight: 600;
+            border-bottom: 2px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+
+<%- include('sidebar') %>
+
+<div class="container-fluid px-4 mt-3">
+    
+    <!-- Success/Error Messages -->
+    <% if (success) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+    
+    <% if (error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i> <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <% if(admin.profile_image && admin.profile_image !== 'default-avatar.png') { %>
+                    <img src="/uploads/<%= admin.profile_image %>" class="profile-img" alt="Profile">
+                <% } else { %>
+                    <img src="/uploads/img/default-avatar.png" class="profile-img" alt="Default Profile">
+                <% } %>
+            </div>
+            <div class="col-md-8">
+                <h2><%= admin.full_name || admin.username %></h2>
+                <p class="mb-1">
+                    <i class="fas fa-envelope"></i> <%= admin.email %> &nbsp;|&nbsp;
+                    <i class="fas fa-user-tag"></i> Role: <%= admin.role || 'Administrator' %>
+                </p>
+                <p>
+                    <i class="fas fa-calendar"></i> Member since: <%= new Date(admin.created_at).toLocaleDateString() %>
+                </p>
+            </div>
+            <div class="col-md-2 text-end">
+                <span class="badge bg-success px-3 py-2">
+                    <i class="fas fa-check-circle"></i> Active
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mb-4" id="profileTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button" role="tab">
+                <i class="fas fa-eye me-2"></i> View Profile
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="edit-tab" data-bs-toggle="tab" data-bs-target="#edit" type="button" role="tab">
+                <i class="fas fa-edit me-2"></i> Edit Profile
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab">
+                <i class="fas fa-key me-2"></i> Change Password
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        
+        <!-- View Profile Tab -->
+        <div class="tab-pane fade show active" id="view" role="tabpanel">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h4><i class="fas fa-user-circle"></i> Personal Information</h4>
+                        <div class="info-row">
+                            <div class="info-label">Full Name:</div>
+                            <div class="info-value"><%= admin.full_name || 'Not set' %></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Username:</div>
+                            <div class="info-value"><%= admin.username %></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Email Address:</div>
+                            <div class="info-value"><%= admin.email %></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Role:</div>
+                            <div class="info-value">
+                                <span class="badge bg-primary"><%= admin.role || 'Administrator' %></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="info-card">
+                        <h4><i class="fas fa-history"></i> Account Information</h4>
+                        <div class="info-row">
+                            <div class="info-label">Admin ID:</div>
+                            <div class="info-value"><%= admin.id %></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Account Created:</div>
+                            <div class="info-value"><%= new Date(admin.created_at).toLocaleString() %></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-label">Last Login:</div>
+                            <div class="info-value">
+                                <% if(admin.last_login) { %>
+                                    <%= new Date(admin.last_login).toLocaleString() %>
+                                <% } else { %>
+                                    First login
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Tab -->
+        <div class="tab-pane fade" id="edit" role="tabpanel">
+            <div class="info-card">
+                <h4><i class="fas fa-edit"></i> Edit Profile Information</h4>
+                <form action="/admin/profile/update" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" name="full_name" class="form-control" 
+                                       value="<%= admin.full_name || '' %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><i class="fas fa-envelope"></i> Email Address</label>
+                                <input type="email" name="email" class="form-control" 
+                                       value="<%= admin.email %>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label><i class="fas fa-image"></i> Profile Image</label>
+                                <input type="file" name="profile_image" class="form-control" accept="image/*">
+                                <small class="text-muted">Leave empty to keep current image</small>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i> Update Profile
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Password Tab -->
+        <div class="tab-pane fade" id="password" role="tabpanel">
+            <div class="info-card">
+                <h4><i class="fas fa-key"></i> Change Password</h4>
+                <form action="/admin/change-password" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Current Password</label>
+                                <input type="password" name="current_password" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> New Password</label>
+                                <input type="password" name="new_password" class="form-control" required>
+                                <small class="text-muted">Minimum 6 characters</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Confirm New Password</label>
+                                <input type="password" name="confirm_password" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-sync-alt me-2"></i> Change Password
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<%- include('footer') %>
+
+

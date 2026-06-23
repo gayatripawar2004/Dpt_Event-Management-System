@@ -1,0 +1,75 @@
+<%- include('../sidebar') %>
+
+<div class="admin-content">
+    <h2 class="mb-4">
+        <%= result ? "Edit Event Result" : "Add Event Result" %>
+    </h2>
+
+    <div class="card p-4 shadow">
+
+        <form action="<%= result ? '/admin/update-result/' + result.id : '/admin/event-results/add' %>" method="POST">
+
+            <!-- Select Event -->
+            <div class="mb-3">
+                <label class="form-label">Select Event</label>
+                <select name="event_id" class="form-control" required>
+                    <option value="">-- Select Event --</option>
+
+                    <% events.forEach(e => { %>
+                        <option value="<%= e.id %>" 
+                            <%= result && result.event_id == e.id ? 'selected' : '' %>>
+                            <%= e.title %>
+                        </option>
+                    <% }) %>
+
+                </select>
+            </div>
+
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Student Name</label>
+                <input type="text" name="name" class="form-control" required
+                       value="<%= result ? result.name : '' %>">
+            </div>
+
+            <!-- Branch -->
+            <div class="mb-3">
+                <label class="form-label">Branch</label>
+                <input type="text" name="branch" class="form-control"
+                       value="<%= result ? result.branch : '' %>">
+            </div>
+
+            <!-- Year -->
+            <div class="mb-3">
+                <label class="form-label">Year</label>
+                <input type="text" name="year" class="form-control"
+                       value="<%= result ? result.year : '' %>">
+            </div>
+
+            <!-- Position -->
+            <div class="mb-3">
+                <label class="form-label">Position</label>
+                <select name="position" class="form-control" required>
+                    <option value="1st" <%= result && result.position == '1st' ? 'selected' : '' %>>1st</option>
+                    <option value="2nd" <%= result && result.position == '2nd' ? 'selected' : '' %>>2nd</option>
+                    <option value="3rd" <%= result && result.position == '3rd' ? 'selected' : '' %>>3rd</option>
+                </select>
+            </div>
+
+            <!-- Score -->
+            <div class="mb-3">
+                <label class="form-label">Score</label>
+                <input type="number" name="score" class="form-control"
+                       value="<%= result ? result.score : '' %>">
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                <%= result ? "Update Winner" : "Add Winner" %>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+</main>
+<%- include('../footer') %>

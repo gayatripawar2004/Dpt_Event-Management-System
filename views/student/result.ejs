@@ -1,0 +1,79 @@
+<%- include('navbar.ejs') %>
+
+<link rel="stylesheet" href="/css/student/result.css">
+
+<section class="page-header">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Event Results</h1>
+        <p class="lead">Check winners and rankings</p>
+    </div>
+</section>
+
+<section class="results-section py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <% if(results.length > 0){ %>
+
+                <% results.forEach(event => { %>
+
+                    <div class="col-lg-4">
+                        <div class="result-card">
+
+                            <div class="card-header">
+                                <h3><%= event.eventName %></h3>
+                                <p>
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <%= new Date(event.eventDate).toLocaleDateString('en-GB') %>
+                                </p>
+                            </div>
+
+                            <div class="card-body">
+
+                                <% event.winners.forEach(w => { %>
+
+                                    <div class="winner-item">
+
+                                        <!-- 🏆 Medal Logic -->
+                                        <div class="winner-icon">
+                                            <% if(w.position === '1st'){ %>
+                                                🥇
+                                            <% } else if(w.position === '2nd'){ %>
+                                                🥈
+                                            <% } else if(w.position === '3rd'){ %>
+                                                🥉
+                                            <% } %>
+                                        </div>
+
+                                        <div class="winner-details">
+                                            <h5><%= w.name %></h5>
+                                            <p><%= w.branch %> | Year <%= w.year %></p>
+
+                                            <% if(w.score){ %>
+                                                <p>Score: <%= w.score %></p>
+                                            <% } %>
+                                        </div>
+
+                                    </div>
+
+                                <% }) %>
+
+                            </div>
+                        </div>
+                    </div>
+
+                <% }) %>
+
+            <% } else { %>
+
+                <div class="col-12 text-center">
+                    <h4>No Results Available</h4>
+                </div>
+
+            <% } %>
+
+        </div>
+    </div>
+</section>
+
+<%- include('footer.ejs') %>

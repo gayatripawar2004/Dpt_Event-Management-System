@@ -1,0 +1,46 @@
+<%- include('../sidebar.ejs') %>
+
+    <div class="container mt-4">
+        <h3 class="mb-3">📊 Event Feedback Overview</h3>
+
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Event</th>
+                    <th>Total Feedback</th>
+                    <th>Average Rating</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% if(events.length> 0){ %>
+                    <% events.forEach(e=> { %>
+                        <tr>
+                            <td><strong>
+                                    <%= e.title %>
+                                </strong></td>
+                            <td>
+                                <%= e.total_feedback %>
+                            </td>
+                            <td>
+                                ⭐
+                                <%= e.avg_rating.toFixed(1) %>/5
+                            </td>
+                            <td>
+                                <a href="/admin/event-feedback/<%= e.id %>" class="btn btn-sm btn-primary">
+                                    View Feedback
+                                </a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="4" class="text-center">No events found</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <%- include('../footer.ejs') %>

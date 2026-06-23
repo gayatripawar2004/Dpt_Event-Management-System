@@ -1,0 +1,108 @@
+.page-header {
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; 
+    object-fit: contain;
+    opacity: 0.6;
+}
+/* Feedback page specific styles */
+
+.feedback-section {
+    background: #f8f9fa;
+}
+
+.feedback-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+.feedback-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.feedback-card h3 {
+    color: #1e3c5c;
+    font-weight: 700;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #1e3c5c;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    transition: all 0.3s;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #ff7e05;
+    box-shadow: 0 0 0 0.2rem rgba(255,126,5,0.25);
+}
+
+/* Star rating styles */
+.rating-stars {
+    display: flex;
+    gap: 10px;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+.rating-stars i {
+    color: #ffb400;
+    transition: transform 0.2s;
+}
+.rating-stars i:hover {
+    transform: scale(1.1);
+}
+
+.btn-primary {
+    background: #ff7e05;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-primary:hover {
+    background: #e06700;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,126,5,0.3);
+}
+
+/* Modal styling */
+.modal-content {
+    border-radius: 20px;
+}
+.modal-header {
+    background: #1e3c5c;
+    color: white;
+    border-radius: 20px 20px 0 0;
+}
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+.modal-footer .btn-primary {
+    background: #ff7e05;
+}
+.modal-footer .btn-primary:hover {
+    background: #e06700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .feedback-card {
+        padding: 25px;
+    }
+    .rating-stars {
+        font-size: 1.4rem;
+        gap: 5px;
+    }
+}

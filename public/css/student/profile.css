@@ -1,0 +1,72 @@
+
+    /* Profile page specific styles – you can also move to external CSS */
+    .profile-header {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        margin-top: -30px;
+        position: relative;
+        z-index: 2;
+    }
+    .avatar-circle {
+        width: 130px;
+        height: 130px;
+        background: #f0f2f5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem auto;
+        overflow: hidden;
+        border: 3px solid #ff7e05;
+    }
+    .avatar-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .avatar-circle i {
+        font-size: 4rem;
+        color: #ff7e05;
+    }
+    .info-row {
+        border-bottom: 1px solid #eef2f6;
+        padding: 12px 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .info-label {
+        font-weight: 600;
+        color: #1e3c5c;
+        width: 160px;
+    }
+    .info-value {
+        color: #4a627a;
+        flex: 1;
+    }
+    .edit-btn {
+        background: #ff7e05;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 40px;
+        font-weight: 600;
+        color: white;
+        transition: 0.3s;
+    }
+    .edit-btn:hover {
+        background: #e06700;
+        transform: translateY(-2px);
+    }
+    .save-btn {
+        background: #28a745;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 40px;
+        font-weight: 600;
+        color: white;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #ff7e05;
+        box-shadow: 0 0 0 0.2rem rgba(255,126,5,0.25);
+    }

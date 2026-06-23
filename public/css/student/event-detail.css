@@ -1,0 +1,222 @@
+/* event-detail.css – styles for the detailed event page */
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.page-header {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    position: relative;
+    background-color: #0a2b3e; /* fallback */
+}
+
+.page-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+}
+
+.page-header .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Event detail card */
+.event-detail-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    margin-bottom: 30px;
+}
+
+.event-detail-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    background: #eef2f6;
+}
+
+.event-info-body {
+    padding: 2rem;
+}
+
+.event-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3c5c;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid #ff7e05;
+    padding-left: 20px;
+}
+
+/* meta grid */
+.event-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f8f9fc;
+    padding: 12px 18px;
+    border-radius: 18px;
+    transition: 0.2s;
+    border: 1px solid #e9ecef;
+}
+
+.meta-item i {
+    font-size: 1.6rem;
+    width: 40px;
+    color: #ff7e05;
+}
+
+.meta-item strong {
+    display: block;
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.meta-item div {
+    font-weight: 500;
+    color: #1e2a3a;
+}
+
+.seats-count {
+    font-weight: 700;
+    color: #28a745;
+    font-size: 1.2rem;
+}
+
+.seats-low {
+    color: #dc3545;
+    background: #fff0f0;
+    padding: 2px 8px;
+    border-radius: 30px;
+    display: inline-block;
+}
+
+/* description */
+.description-section {
+    margin: 25px 0;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.description-section h5 {
+    color: #1e3c5c;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.description-section p {
+    line-height: 1.7;
+    color: #2c3e50;
+}
+
+.deadline-info {
+    background: #fff8e7;
+    padding: 12px 18px;
+    border-radius: 40px;
+    display: inline-block;
+    margin-bottom: 25px;
+    font-weight: 500;
+    color: #b45f06;
+    font-size: 0.9rem;
+}
+
+.deadline-info i {
+    margin-right: 8px;
+    color: #e67e22;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn-back {
+    background: #f1f5f9;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    color: #1e3c5c;
+    text-decoration: none;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back:hover {
+    background: #e2e8f0;
+    color: #ff7e05;
+    transform: translateX(-3px);
+}
+
+.btn-register {
+    background: #ff7e05;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 40px;
+    font-weight: 600;
+    color: white;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
+.btn-register:hover {
+    background: #e06700;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 126, 5, 0.3);
+}
+
+/* backend note (only visible to dev) */
+.backend-note {
+    font-size: 0.85rem;
+    background-color: #fef9e6;
+    border-left-color: #ffc107 !important;
+}
+
+@media (max-width: 768px) {
+    .event-detail-img {
+        height: 240px;
+    }
+    .event-title {
+        font-size: 1.6rem;
+    }
+    .event-info-body {
+        padding: 1.25rem;
+    }
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-back, .btn-register {
+        justify-content: center;
+    }
+}

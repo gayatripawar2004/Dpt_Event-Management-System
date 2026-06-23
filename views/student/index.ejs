@@ -1,0 +1,241 @@
+<%- include('navbar.ejs') %>
+<link rel="stylesheet" href="/css/student/index.css">
+
+<!-- Announcement Ticker (Attention-grabbing) -->
+<div class="announcement-bar">
+    <div class="container">
+        <div class="ticker-wrap">
+            <div class="ticker">
+
+                <% if(announcements.length > 0){ %>
+
+                    <% announcements.forEach((a, index) => { %>
+
+                        <span class="announcement-icon">📢</span>
+                        <span><%- a.title %></span>
+
+                        <% if(index !== announcements.length - 1){ %>
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <% } %>
+
+                    <% }) %>
+
+                <% } else { %>
+
+                    <span>No announcements available</span>
+
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to the E&CE Event Portal</h1>
+        <p>Discover, register, and stay updated on departmental events, workshops, and activities — all in one place.</p>
+        <a href="/event" class="btn btn-explore">Explore Events <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+</section>
+
+<!-- Statistics Cards -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3><%= totalEvents %>+</h3>
+                    <p>Total Events</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <h3><%= totalParticipants %>+</h3>
+                    <p>Total Participants</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <h3><%= upcomingEvents.length %></h3>
+                    <p>Upcoming Events</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Upcoming Events Preview -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Upcoming Events</h2>
+        </div>
+        
+        <% if(upcomingEvents && upcomingEvents.length > 0) { %>
+            <div class="row">
+                <% upcomingEvents.forEach(event => { %>
+                    <div class="col-md-4">
+                        <div class="event-card">
+                            <% if(event.image) { %>
+                                <img src="/uploads/<%= event.image %>" class="event-img" alt="<%= event.title %>">
+                            <% } else { %>
+                                <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" class="event-img" alt="Event">
+                            <% } %>
+                            <div class="event-body">
+                                <h5 class="event-title"><%= event.title %></h5>
+                                <div class="event-meta">
+                                    <i class="fas fa-calendar-alt"></i> <%= new Date(event.date).toLocaleDateString() %>
+                                </div>
+                                <div class="event-meta">
+                                    <i class="fas fa-map-marker-alt"></i> <%= event.venue || 'Venue to be announced' %>
+                                </div>
+                                <div class="event-meta">
+                                    <i class="fas fa-clock"></i> <%= event.time || 'Time to be announced' %>
+                                </div>
+                                <% if(event.seats) { %>
+                                    <div class="event-meta">
+                                        <i class="fas fa-chair"></i> Seats Available: <span class="seats"><%= event.seats %></span>
+                                    </div>
+                                <% } %>
+                                <a href="/event-details?id=<%= event.id %>" class="btn btn-view mt-2">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+                
+                <!-- If only 1 or 2 events, show placeholder cards? Optional -->
+                <% if(upcomingEvents.length === 1) { %>
+                    <div class="col-md-4">
+                        <div class="event-card text-center py-5">
+                            <i class="fas fa-calendar-plus fa-3x mb-3" style="color: #ff7e05;"></i>
+                            <h5>More Events Coming Soon</h5>
+                            <p class="text-muted">Stay tuned for updates!</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="event-card text-center py-5">
+                            <i class="fas fa-calendar-plus fa-3x mb-3" style="color: #ff7e05;"></i>
+                            <h5>More Events Coming Soon</h5>
+                            <p class="text-muted">Stay tuned for updates!</p>
+                        </div>
+                    </div>
+                <% } else if(upcomingEvents.length === 2) { %>
+                    <div class="col-md-4">
+                        <div class="event-card text-center py-5">
+                            <i class="fas fa-calendar-plus fa-3x mb-3" style="color: #ff7e05;"></i>
+                            <h5>More Events Coming Soon</h5>
+                            <p class="text-muted">Stay tuned for updates!</p>
+                        </div>
+                    </div>
+                <% } %>
+                
+            </div>
+        <% } else { %>
+            <!-- No Upcoming Events Message - Show 3 placeholder cards -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="event-card text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x mb-3" style="color: #ff7e05;"></i>
+                        <h5>No Events Currently</h5>
+                        <p class="text-muted">Check back soon for new events!</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="event-card text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x mb-3" style="color: #ff7e05;"></i>
+                        <h5>No Events Currently</h5>
+                        <p class="text-muted">Check back soon for new events!</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="event-card text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x mb-3" style="color: #ff7e05;"></i>
+                        <h5>No Events Currently</h5>
+                        <p class="text-muted">Check back soon for new events!</p>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <div class="text-center mt-4">
+            <a href="/event" class="btn btn-outline-primary rounded-pill px-4">
+                View All Events <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+<!-- Why Use Our Portal -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-title">Why Use Our Portal?</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
+                    <h5>Department Updates</h5>
+                    <p>Stay informed about upcoming events, workshops, and activities.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-edit"></i></div>
+                    <h5>Easy Registration</h5>
+                    <p>Register for any event in just a few clicks.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-trophy"></i></div>
+                    <h5>Participation Tracking</h5>
+                    <p>Keep track of all events you’ve attended and your achievements.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Department & Vision/Mission -->
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-title text-start">About Department</h2>
+                <p>The Department of Electronics and Computer Engineering (E&CE) at Hon. Shri. Babanrao Pachpute Vichardhara Trust's Faculty of Engineering, Kashti, is committed to providing quality education and fostering innovation. With state-of-the-art laboratories, experienced faculty, and a strong focus on research, we prepare students for the challenges of the tech industry.</p>
+                <p>Our department organizes various technical events, workshops, and seminars to enhance practical knowledge and industry exposure.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-4">
+                    <div class="col-sm-6">
+                        <div class="vision-card">
+                            <h4><i class="fas fa-eye text-warning me-2"></i> Vision</h4>
+                            <p>To be a center of excellence in Electronics and Computer Engineering, producing skilled professionals who contribute to society through innovation and ethical practices.</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mission-card">
+                            <h4><i class="fas fa-bullseye text-warning me-2"></i> Mission</h4>
+                            <p>Impart quality education, promote research and development, and nurture industry-ready engineers with strong problem-solving skills.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+    
+
+    
+<%- include('footer.ejs') %>

@@ -1,0 +1,129 @@
+<%- include('navbar.ejs') %>
+    <link rel="stylesheet" href="/css/student/contact.css">
+
+    <!-- Page Header (identical to event page) -->
+    <section class="page-header"
+        style="background-image: url('/uploads/<%= header.image %>'); background-size: cover; background-position: center;">
+        <div class="container text-white">
+            <h1 class="display-4 fw-bold">
+                <%= header.title %>
+            </h1>
+            <p class="lead fw-bold">
+                <%= header.subtitle %>
+            </p>
+        </div>
+    </section>
+
+
+    <!-- Contact Section -->
+    <section class="contact-section py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Contact Form -->
+                <div class="col-lg-6">
+                    <div class="contact-card">
+                        <h3 class="section-title text-start">Send a Message</h3>
+                        <form id="contactForm" action="/submit-contact" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-lg-6">
+                    <div class="contact-card">
+                        <h3 class="section-title text-start">Get in Touch</h3>
+                        <div class="contact-info">
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <h5>Address</h5>
+                                    <p>
+                                        <%= info.address %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h5>Email</h5>
+                                    <p>
+                                        <%= info.email1 %><br>
+                                            <%= info.email2 %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-phone-alt"></i>
+                                <div>
+                                    <h5>Phone</h5>
+                                    <p>
+                                        <%= info.phone1 %><br>
+                                            <%= info.phone2 %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h5>Office Hours</h5>
+                                    <p>
+                                        <%= info.office_hours_weekdays %><br>
+                                            <%= info.office_hours_saturday %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="social-links mt-4">
+                            <h5>Follow Us</h5>
+
+                            <% if (info.facebook_link) { %>
+                                <a href="<%= info.facebook_link %>" class="social-icon" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <% } %>
+
+                                    <% if (info.instagram_link) { %>
+                                        <a href="<%= info.instagram_link %>" class="social-icon" target="_blank">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <% } %>
+
+                                            <% if (info.youtube_link) { %>
+                                                <a href="<%= info.youtube_link %>" class="social-icon" target="_blank">
+                                                    <i class="fab fa-youtube"></i>
+                                                </a>
+                                                <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map (optional) -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7566.265224727491!2d74.56620827770998!3d18.
+                    522908500000018!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc31540b150eb6b%3A0x740e42a60b7eb171!2s
+                    Parikrama%20Faculty%20of%20Engineering%2C%20kashti!5e0!3m2!1sen!2sin!4v1775060613820!5m2!1sen!2sin"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('footer.ejs') %>

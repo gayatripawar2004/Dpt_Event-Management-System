@@ -1,0 +1,206 @@
+<%- include('../sidebar') %>
+<div class="container mt-4">
+    <h2>Manage Registration Fields for: <span class="text-primary">
+            <%= event.title %>
+        </span></h2>
+    <button class="btn btn-success mb-3" id="addFieldBtn">+ Add Field</button>
+
+    <form id="fieldsForm">
+        <input type="hidden" name="event_id" value="<%= event.id %>">
+        <div id="fieldsContainer">
+            <% fields.forEach((field, idx)=> { %>
+                <div class="card mb-3 field-card" data-id="<%= field.id %>">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Label</label>
+                                <input type="text" name="label" class="form-control" value="<%= field.field_label %>" required>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Name</label>
+                                <input type="text" name="name" class="form-control" value="<%= field.field_name %>" required>
+                                <small class="text-muted">no spaces, only use(_) underscore</small>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Type</label>
+                                <select name="type" class="form-control field-type">
+                                    <option value="text" <%= field.field_type === 'text' ? 'selected' : '' %>>Text</option>
+                                    <option value="email" <%= field.field_type === 'email' ? 'selected' : '' %>>Email</option>
+                                    <option value="number" <%= field.field_type === 'number' ? 'selected' : '' %>>Number</option>
+                                    <option value="textarea" <%= field.field_type === 'textarea' ? 'selected' : '' %>>Textarea</option>
+                                    <option value="select" <%= field.field_type === 'select' ? 'selected' : '' %>>Select</option>
+                                    <option value="radio" <%= field.field_type === 'radio' ? 'selected' : '' %>>Radio</option>
+                                    <option value="date" <%= field.field_type === 'date' ? 'selected' : '' %>>Date</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 options-div" style="display: <%= (field.field_type === 'select' || field.field_type === 'radio') ? 'block' : 'none' %>;">
+                                <label>Options (comma separated)</label>
+                                <input type="text" name="options" class="form-control" value="<%= field.options || '' %>">
+                            </div>
+                            <div class="col-md-1">
+                                <label>Required</label>
+                                <input type="checkbox" name="is_required" style="margin-top: 30px;" <%= field.is_required ? 'checked' : '' %>>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger remove-field mt-4">✖</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        <button type="submit" class="btn btn-primary">Save All Fields</button>
+        <a href="/admin/edit-event/<%= event.id %>" class="btn btn-secondary">Back to Events</a>
+    </form>
+</div>
+
+<script>
+    (function() {
+        // ----- Helper: Auto-generate name from label (for a given row) -----
+        function setupAutoGenerate(row) {
+            let labelInput = row.querySelector('input[name="label"]');
+            let nameInput = row.querySelector('input[name="name"]');
+            if (!labelInput || !nameInput) return;
+
+            // Remove old listeners to avoid duplicates
+            labelInput.removeEventListener('input', autoGenerateHandler);
+            labelInput.addEventListener('input', autoGenerateHandler);
+
+            function autoGenerateHandler(e) {
+                if (!nameInput._manuallyChanged) {
+                    let generatedName = e.target.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '_')
+                        .replace(/^_|_$/g, '');
+                    nameInput.value = generatedName;
+                }
+            }
+
+            nameInput.removeEventListener('input', markManual);
+            nameInput.addEventListener('input', markManual);
+            function markManual() {
+                nameInput._manuallyChanged = true;
+            }
+        }
+
+        // ----- Helper: Toggle Options field based on Type (select/radio) -----
+        function setupTypeToggle(row) {
+            let typeSelect = row.querySelector('select[name="type"]');
+            let optionsDiv = row.querySelector('.options-div');
+            if (!typeSelect || !optionsDiv) return;
+
+            function toggle() {
+                if (typeSelect.value === 'select' || typeSelect.value === 'radio') {
+                    optionsDiv.style.display = 'block';
+                } else {
+                    optionsDiv.style.display = 'none';
+                }
+            }
+            typeSelect.removeEventListener('change', toggle);
+            typeSelect.addEventListener('change', toggle);
+            toggle(); // initial state
+        }
+
+        // ----- Apply helpers to all existing field cards -----
+        document.querySelectorAll('.field-card').forEach(card => {
+            let row = card.querySelector('.row');
+            setupAutoGenerate(row);
+            setupTypeToggle(row);
+        });
+
+        // ----- Add new field (when + Add Field clicked) -----
+        document.getElementById('addFieldBtn').onclick = function() {
+            let container = document.getElementById('fieldsContainer');
+            let newCard = document.createElement('div');
+            newCard.className = 'card mb-3 field-card';
+            // Use same HTML structure as existing fields, but empty values
+            newCard.innerHTML = `
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Label</label>
+                            <input type="text" name="label" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control" required>
+                            <small class="text-muted">no spaces, only use(_) underscore</small>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Type</label>
+                            <select name="type" class="form-control field-type">
+                                <option value="text">Text</option>
+                                <option value="email">Email</option>
+                                <option value="number">Number</option>
+                                <option value="textarea">Textarea</option>
+                                <option value="select">Select</option>
+                                <option value="radio">Radio</option>
+                                <option value="date">Date</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 options-div" style="display:none">
+                            <label>Options (comma separated)</label>
+                            <input type="text" name="options" class="form-control">
+                        </div>
+                        <div class="col-md-1">
+                            <label>Required</label>
+                            <input type="checkbox" name="is_required" style="margin-top: 30px;">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-danger remove-field mt-4">✖</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newCard);
+            let row = newCard.querySelector('.row');
+            setupAutoGenerate(row);
+            setupTypeToggle(row);
+        };
+
+        // ----- Remove field (delegated event) -----
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-field')) {
+                e.target.closest('.field-card').remove();
+            }
+        });
+
+        // ----- Save all fields (AJAX) -----
+        document.getElementById('fieldsForm').onsubmit = async function(e) {
+            e.preventDefault();
+            let eventId = document.querySelector('input[name="event_id"]').value;
+            let fields = [];
+
+            document.querySelectorAll('.field-card').forEach(card => {
+                let row = card.querySelector('.row');
+                let label = row.querySelector('input[name="label"]').value;
+                let name = row.querySelector('input[name="name"]').value;
+                let type = row.querySelector('select[name="type"]').value;
+                let options = row.querySelector('input[name="options"]')?.value || '';
+                let is_required = row.querySelector('input[name="is_required"]').checked;
+                if (label && name) {
+                    fields.push({ label, name, type, options, is_required });
+                }
+            });
+
+            try {
+                let response = await fetch('/admin/event-fields/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ event_id: eventId, fields: fields })
+                });
+                let result = await response.json();
+                if (result.success) {
+                    alert('Fields saved successfully!');
+                    window.location.href = '/admin/edit-event/' + eventId;
+                } else {
+                    alert('Error: ' + result.error);
+                }
+            } catch (err) {
+                alert('Network error: ' + err.message);
+            }
+        };
+    })();
+</script>
+
+<%- include('../footer') %>

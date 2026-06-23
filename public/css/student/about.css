@@ -1,0 +1,100 @@
+/* ===== HEADER (same as event page) ===== */
+.page-header {
+    background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHt1EsV2XHCliXIzBd1DiViAy4V-51jfnJFA&s");
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    object-fit: contain;
+}
+
+/* ===== GENERAL ===== */
+.about-img {
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.section-title {
+    font-weight: 700;
+    color: #1e3c5c;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 40px;
+}
+.section-title:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #ff7e05;
+    border-radius: 5px;
+}
+.section-title.text-start:after {
+    left: 0;
+    transform: none;
+}
+
+/* ===== CARDS ===== */
+.vision-card,
+.mission-card,
+.faculty-card,
+.facility-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    height: 100%;
+}
+.vision-card:hover,
+.mission-card:hover,
+.faculty-card:hover,
+.facility-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: #ff7e05;
+    margin-bottom: 15px;
+}
+
+/* Mission list */
+.mission-card ul {
+    list-style-type: disc;
+    padding-left: 1.2rem;
+}
+.mission-card li {
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* Faculty (no images) */
+.faculty-card h5 {
+    font-weight: 700;
+    color: #1e3c5c;
+    margin-bottom: 10px;
+}
+.faculty-card p {
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+/* Button */
+.btn-outline-primary {
+    border-color: #1e3c5c;
+    color: #1e3c5c;
+}
+.btn-outline-primary:hover {
+    background-color: #1e3c5c;
+    border-color: #1e3c5c;
+    color: white;
+}

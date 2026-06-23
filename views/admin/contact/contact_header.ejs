@@ -1,0 +1,155 @@
+<style>
+    .admin-content {
+        flex: 1;
+        padding: 1.8rem;
+        background: #f8fafc;
+    }
+   
+    /* Form Card */
+    .card {
+        border: none;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    }
+    .card-header {
+        background: white;
+        border-bottom: 2px solid #eef2ff;
+        padding: 1.2rem 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: #1e293b;
+    }
+    .form-label {
+        font-weight: 500;
+        color: #0f172a;
+        margin-bottom: 0.5rem;
+    }
+    .form-control, .form-control:focus {
+        border-radius: 0.75rem;
+        padding: 0.7rem 1rem;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s;
+    }
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+    }
+    .btn-success {
+        background: #0d6efd;
+        border: none;
+        padding: 0.5rem 1.8rem;
+        border-radius: 2rem;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+    .btn-success:hover {
+        background: #0b5ed7;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+        .admin-content {
+            padding: 1rem;
+        }
+        .preview-card h1 {
+            font-size: 1.5rem;
+        }
+        .preview-card p {
+            font-size: 0.95rem;
+        }
+    }
+</style>
+
+<%- include('../sidebar') %>
+
+<div class="admin-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0"><i class="fas fa-calendar-alt me-2 text-primary"></i>contact Header</h1>
+        <a href="/admin/contact" class="btn btn-sm btn-outline-secondary rounded-pill">
+            <i class="fas fa-arrow-left me-1"></i> Back
+        </a>
+    </div>
+
+  
+
+    <!-- Form Card -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <i class="fas fa-pen-alt me-2 text-primary"></i> Edit Contact Header
+        </div>
+        <div class="card-body">
+            <form action="/admin/contact-header/update" method="POST" enctype="multipart/form-data">
+               
+                <div class="mb-4">
+                    <label class="form-label">Header Title</label>
+                    <input type="text" name="title" class="form-control"
+                           value="<%= header && header.title ? header.title : '' %>" required>
+                    <div class="form-text">Main heading for the Contact page.</div>
+                </div>
+
+               
+                <div class="mb-4">
+                    <label class="form-label">Subtitle</label>
+                    <textarea name="subtitle" class="form-control" rows="3" required><%= header && header.subtitle ? header.subtitle : '' %></textarea>
+                    <div class="form-text">Short description shown below the title.</div>
+                </div>
+                
+                <div class="mb-4">
+    <label class="form-label">Current Image</label><br>
+
+    <% if (header && header.image) { %>
+        <img src="/uploads/<%= header.image %>" 
+             alt="Contact Image" 
+             style="width: 180px; height: auto; border-radius: 10px; margin-bottom: 10px;">
+    <% } else { %>
+        <p class="text-muted">No image uploaded</p>
+    <% } %>
+</div>
+
+<div class="mb-4">
+    <label class="form-label">Upload New Image</label>
+    <input type="file" name="image" class="form-control">
+    <div class="form-text">Leave blank to keep old image.</div>
+</div>             
+                
+
+               
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-success rounded-pill px-5">
+                        <i class="fas fa-save me-2"></i> Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</main>
+<%- include('../footer') %>
+
+<script>
+    const titleInput = document.querySelector('[name="title"]');
+    const leadInput = document.querySelector('[name="subtitle"]');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewLead = document.getElementById('previewLead');
+
+    titleInput.addcontactListener('input', () => {
+        previewTitle.textContent = titleInput.value || 'contact';
+    });
+    leadInput.addcontactListener('input', () => {
+        previewLead.textContent = leadInput.value || 'Explore workshops, seminars, competitions...';
+    });
+
+    // Reset button resets preview too
+    const resetBtn = document.querySelector('button[type="reset"]');
+    if (resetBtn) {
+        resetBtn.addcontactListener('click', () => {
+            setTimeout(() => {
+                previewTitle.textContent = titleInput.value || 'contact';
+                previewLead.textContent = leadInput.value || 'Moments from workshops, hackathons, guest lectures, and student life — captured forever.';
+            }, 10);
+        });
+    }
+</script>

@@ -1,0 +1,135 @@
+<%- include('../sidebar.ejs') %>
+
+<style>
+    .page-container {
+        padding: 20px;
+        background: #f1f5f9;
+        min-height: 100vh;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    .table thead {
+        background: black;
+        color: white;
+       
+    }
+
+    .table th {
+        font-weight: 500;
+        border: none;
+        border: 1px solid #f4f5f6;
+    }
+
+    .table td {
+        vertical-align: middle;
+         border: 1px solid #1c1d1e;
+    }
+
+    .table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        background: #f8fafc;
+        transform: scale(1.01);
+    }
+
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    .badge-active {
+        background: #22c55e;
+        color: white;
+    }
+
+    .badge-completed {
+        background: #64748b;
+        color: white;
+    }
+
+    .badge-inactive {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .btn-custom {
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 13px;
+    }
+
+    .header-title {
+        font-weight: 600;
+        color: #1e293b;
+    }
+</style>
+
+<div class="page-container">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="header-title">📅 Event Management</h3>
+        <a href="/admin/add_event" class="btn btn-primary btn-custom">+ Add Event</a>
+    </div>
+
+    <div class="table-card">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Event Title</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% events.forEach(event => { %>
+                <tr>
+                    <td><strong>#<%= event.id %></strong></td>
+
+                    <td>
+                        <div>
+                            <strong><%= event.title %></strong><br>
+                            <small class="text-muted"><%= event.venue || 'No venue' %></small>
+                        </div>
+                    </td>
+
+                    <td>
+                        <%= event.date ? new Date(event.date).toLocaleDateString('en-GB', {
+                            day:'numeric', month:'short', year:'numeric'
+                        }) : '' %>
+                    </td>
+
+                    <td>
+                        <% if(event.status === 'active'){ %>
+                            <span class="badge-status badge-active">Active</span>
+                        <% } else if(event.status === 'completed'){ %>
+                            <span class="badge-status badge-completed">Completed</span>
+                        <% } else { %>
+                            <span class="badge-status badge-inactive">Inactive</span>
+                        <% } %>
+                    </td>
+
+                    <td class="text-center">
+                        <a href="/admin/event-details/<%= event.id %>" class="btn btn-info btn-sm btn-custom">Info</a>
+                        <a href="/admin/edit-event/<%= event.id %>" class="btn btn-warning btn-sm btn-custom">Edit</a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<%- include('../footer.ejs') %>

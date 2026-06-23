@@ -1,0 +1,95 @@
+.page-header {
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; 
+    object-fit: contain;
+    opacity: 0.6;
+}
+
+/* Privacy page specific styles */
+
+.privacy-section {
+    background: #f8f9fa;
+}
+
+.privacy-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+.privacy-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.privacy-date {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.privacy-block {
+    margin-bottom: 30px;
+}
+
+.privacy-block h3 {
+    color: #1e3c5c;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ff7e05;
+    display: inline-block;
+}
+
+.privacy-block p, .privacy-block ul {
+    color: #4a5568;
+    line-height: 1.7;
+    margin-top: 10px;
+}
+
+.privacy-block ul {
+    padding-left: 20px;
+}
+
+.privacy-block li {
+    margin-bottom: 8px;
+}
+
+.privacy-block a {
+    color: #ff7e05;
+    text-decoration: none;
+}
+.privacy-block a:hover {
+    text-decoration: underline;
+}
+
+.btn-outline-primary {
+    border-color: #1e3c5c;
+    color: #1e3c5c;
+    transition: 0.3s;
+}
+.btn-outline-primary:hover {
+    background: #1e3c5c;
+    border-color: #1e3c5c;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .privacy-card {
+        padding: 25px;
+    }
+    .privacy-block h3 {
+        font-size: 1.2rem;
+    }
+}

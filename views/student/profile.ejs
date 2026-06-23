@@ -1,0 +1,164 @@
+<%- include('navbar.ejs') %>
+
+
+<link rel="stylesheet" href="/css/student/profile.css"> 
+<div class="container my-5">
+    <% if (student) { %>
+        <div class="profile-header">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <div class="avatar-circle">
+                        <% if (student.profile_image && student.profile_image !== 'default.png' && student.profile_image !== 'default-user.png') { %>
+                            <img src="/uploads/<%= student.profile_image %>" alt="Profile Photo">
+                        <% } else { %>
+                            <i class="fas fa-user-graduate"></i>
+                        <% } %>
+                    </div>
+                    <h4 class="mt-3 fw-bold"><%= student.name %></h4>
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Student</span>
+                    <% if (success) { %>
+                        <div class="alert alert-success mt-3 alert-dismissible fade show" role="alert">
+                            <%= success %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <% } %>
+                    <% if (error) { %>
+                        <div class="alert alert-danger mt-3"><%= error %></div>
+                    <% } %>
+                </div>
+                <div class="col-md-9">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="fw-bold" style="color:#0a2b3e;"><i class="fas fa-address-card me-2" style="color:#ff7e05;"></i> Complete Profile</h3>
+                        <button class="edit-btn" id="enableEditBtn"><i class="fas fa-pen me-2"></i> Edit Profile</button>
+                    </div>
+                    
+                    
+                    <div id="viewMode">
+                        <div class="info-row"><div class="info-label">Full Name :</div><div class="info-value"><%= student.name %></div></div>
+                        <div class="info-row"><div class="info-label">PRN Number :</div><div class="info-value"><%= student.prn || 'Not provided' %></div></div>
+                        <div class="info-row"><div class="info-label">Email :</div><div class="info-value"><%= student.email %></div></div>
+                        <div class="info-row"><div class="info-label">Mobile :</div><div class="info-value"><%= student.mobile || 'Not provided' %></div></div>
+                        <div class="info-row"><div class="info-label">Department :</div><div class="info-value"><%= student.department %></div></div>
+                        <div class="info-row"><div class="info-label">Year :</div><div class="info-value"><%= student.year %></div></div>
+                        <div class="info-row"><div class="info-label">Semester :</div><div class="info-value"><%= student.semester || 'Not set' %></div></div>
+                        <div class="info-row"><div class="info-label">Date of Birth :</div><div class="info-value"><%= student.dob ? new Date(student.dob).toLocaleDateString('en-IN') : 'Not provided' %></div></div>
+                        <div class="info-row"><div class="info-label">Parents Name :</div><div class="info-value"><%= student.parents_name || 'Not provided' %></div></div>
+                        <div class="info-row"><div class="info-label">Parents Mobile :</div><div class="info-value"><%= student.parents_mobile || 'Not provided' %></div></div>
+                    </div>
+                    
+                    <!-- 📝 Edit Mode Form (includes image upload, semester, DOB) -->
+                    <div id="editMode" style="display: none;">
+                        <form action="/profile/update" method="POST" enctype="multipart/form-data" id="profileUpdateForm">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Profile Picture</label>
+                                <input type="file" name="profile_image" class="form-control" accept="image/*">
+                                <small class="text-muted">Leave empty to keep current image</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Full Name *</label>
+                                <input type="text" name="name" class="form-control" value="<%= student.name %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Email *</label>
+                                <input type="email" name="email" class="form-control" value="<%= student.email %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Mobile</label>
+                                <input type="text" name="mobile" class="form-control" value="<%= student.mobile || '' %>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Department *</label>
+                                <input type="text" name="department" class="form-control" value="<%= student.department %>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Year *</label>
+                                <select name="year" class="form-select">
+                                    <option value="FE" <%= student.year === 'FE' ? 'selected' : '' %>>FE</option>
+                                    <option value="SE" <%= student.year === 'SE' ? 'selected' : '' %>>SE</option>
+                                    <option value="TE" <%= student.year === 'TE' ? 'selected' : '' %>>TE</option>
+                                    <option value="BE" <%= student.year === 'BE' ? 'selected' : '' %>>BE</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Semester</label>
+                                <select name="semester" class="form-select">
+                                    <option value="">-- Select Semester --</option>
+                                    <option value="Semester 1" <%= student.semester === 'Semester 1' ? 'selected' : '' %>>Semester 1</option>
+                                    <option value="Semester 2" <%= student.semester === 'Semester 2' ? 'selected' : '' %>>Semester 2</option>
+                                    <option value="Semester 3" <%= student.semester === 'Semester 3' ? 'selected' : '' %>>Semester 3</option>
+                                    <option value="Semester 4" <%= student.semester === 'Semester 4' ? 'selected' : '' %>>Semester 4</option>
+                                    <option value="Semester 5" <%= student.semester === 'Semester 5' ? 'selected' : '' %>>Semester 5</option>
+                                    <option value="Semester 6" <%= student.semester === 'Semester 6' ? 'selected' : '' %>>Semester 6</option>
+                                    <option value="Semester 7" <%= student.semester === 'Semester 7' ? 'selected' : '' %>>Semester 7</option>
+                                    <option value="Semester 8" <%= student.semester === 'Semester 8' ? 'selected' : '' %>>Semester 8</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Date of Birth</label>
+                                <input type="date" name="dob" class="form-control" value="<%= student.dob ? new Date(student.dob).toISOString().split('T')[0] : '' %>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Parents Name</label>
+                                <input type="text" name="parents_name" class="form-control" value="<%= student.parents_name || '' %>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Parents Mobile</label>
+                                <input type="text" name="parents_mobile" class="form-control" value="<%= student.parents_mobile || '' %>">
+                            </div>
+                            
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn save-btn text-white"><i class="fas fa-save me-2"></i> Save Changes</button>
+                                <button type="button" class="btn btn-secondary" id="cancelEditBtn"><i class="fas fa-times me-2"></i> Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+     
+            </div>
+       
+    <% } else { %>
+        <div class="alert alert-warning text-center p-5 rounded-4 mt-4">
+            <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+            <h3>Access Denied</h3>
+            <p>Please log in to view your profile.</p>
+            <a href="/login" class="btn login-btn mt-2"><i class="fas fa-sign-in-alt"></i> Go to Login</a>
+        </div>
+    <% } %>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Toggle view/edit modes
+    const enableBtn = document.getElementById('enableEditBtn');
+    const viewDiv = document.getElementById('viewMode');
+    const editDiv = document.getElementById('editMode');
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    
+    if (enableBtn) {
+        enableBtn.addEventListener('click', () => {
+            viewDiv.style.display = 'none';
+            editDiv.style.display = 'block';
+        });
+    }
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            editDiv.style.display = 'none';
+            viewDiv.style.display = 'block';
+        });
+    }
+    
+    // Optional: if actionMenuItem exists in navbar, handle it
+    const actionItem = document.getElementById('actionMenuItem');
+    if (actionItem) {
+        actionItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('✨ Action Center ✨\nQuick actions: View attendance, submit assignments, fee payment.');
+        });
+    }
+</script>
+
+<%- include('footer.ejs') %>
