@@ -1258,6 +1258,38 @@ exports.deleteStudent = async (req, res) => {
 // ============= ABOUT PAGE MANAGEMENT =============
 
 // Show about page admin form
+
+exports.about_header = async (req, res) => {
+    try{
+        let sql = "SELECT * FROM about_header LIMIT 1";
+        var data = await exe(sql);
+        res.render('admin/about/about_header.ejs', { "header": data[0] });
+    }catch(err){
+        console.log(err);
+    }   
+}
+
+exports.about_header_update = async (req, res) => {
+    try {
+        let { title, subtitle } = req.body;
+        let oldData = await exe("SELECT * FROM about_header WHERE id = 1");
+        let oldImage = oldData[0].image;
+        let newImage = oldImage;
+
+        if (req.file) {
+            newImage = req.file.filename;
+            if (oldImage && fs.existsSync(path.join("public/uploads/", oldImage))) {
+                fs.unlinkSync(path.join("public/uploads/", oldImage));
+            }
+        }
+        
+        let sql = "UPDATE about_header SET `title` = ?, `subtitle` = ?, `image` = ? WHERE `id` = ?";
+        await exe(sql, [title, subtitle, newImage, 1]);
+        res.redirect('/admin/about_header');
+    } catch (err) {
+        console.log(err);
+    }
+};
 exports.aboutPageAdmin = async (req, res) => {
     try {
         let about = await exe("SELECT * FROM about_page WHERE id = 1");

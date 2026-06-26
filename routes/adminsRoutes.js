@@ -124,6 +124,10 @@ router.post('/student/delete/:id', verifyAdmin, adminsController.deleteStudent);
 
 // About Page routes
 router.get('/about', verifyAdmin, adminsController.aboutPageAdmin);
+router.get("/about_header", adminsController.about_header);
+router.post('/about_header/update', upload.single('image'), adminsController.about_header_update);
+
+
 router.post('/about/update', verifyAdmin, upload.single('image'), adminsController.updateAboutPage);
 
 // Faculty routes (without image upload)

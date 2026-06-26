@@ -216,10 +216,13 @@ exports.eventPage = async (req, res) => {
 };
 exports.aboutPage = async function(req, res) {
     try {
+        let headerSql = "SELECT * FROM about_header LIMIT 1";
+        let headerData = await exe(headerSql);
         let about = await exe("SELECT * FROM about_page WHERE id = 1");
         let faculty = await exe("SELECT * FROM faculty WHERE status = 'active' ORDER BY display_order ASC");
          let facilities = await exe("SELECT * FROM facilities WHERE status = 'active' ORDER BY display_order ASC");
         res.render('student/about.ejs', { 
+            header: headerData[0] || {},
             about: about[0] || {},
             faculty: faculty || [],
             facilities: facilities || []
