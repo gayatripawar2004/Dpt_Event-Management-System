@@ -4,12 +4,13 @@
 <link rel="stylesheet" href="/css/student/about.css">
 
 <!-- Page Header – styled identically to event page -->
-<section class="page-header">
-    <div class="container">
-        <h1 class="display-4 fw-bold">About Department</h1>
-        <p class="lead">Electronics and Computer Engineering – Innovation, Excellence, and Future-Ready Skills</p>
+<section class="page-header" style="background-image: url('/uploads/<%= header.image %>'); background-size: cover; background-position: center;">
+    <div class="container text-white">
+        <h1 class="display-4 fw-bold"><%= header.title %></h1>
+        <p class="lead fw-bold"><%= header.subtitle %></p>
     </div>
 </section>
+
 
 <!-- Department Overview -->
 <section class="py-5">
